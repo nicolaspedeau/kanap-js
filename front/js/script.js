@@ -1,34 +1,37 @@
 // Récupération des pièces depuis l'API
-try {
-	async function getDataFromApi() {
+
+async function getDataFromApi() {
+	try {
 		let data = await fetch("http://localhost:3000/api/products")
 		let resp = data.json()
 		return resp
+	}
+	catch (err) {
+		apiError();
+	}
 
-	};
+};
 
-
+//Intégration html des différents produits
 (async function renderProduct() {
 	let data = await getDataFromApi()
 	const sectionItems = document.querySelector(".items");
 	data.forEach( (item) =>  {
 		sectionItems.innerHTML += `<a href="./product.html?id=${item._id}">
 		<article>
-		  <img src="${item.imageUrl}" alt="${item.altTxt}">
-		  <h3 class="productName">${item.name}</h3>
-		  <p class="productDescription">${item.description}</p>
+		<img src="${item.imageUrl}" alt="${item.altTxt}">
+		<h3 class="productName">${item.name}</h3>
+		<p class="productDescription">${item.description}</p>
 		</article>
-	  </a>`
+	</a>`
 	})
 })()
+
+
+
+function apiError () {
+    document.querySelector(".items").innerHTML = "<div>Une erreur s'est produite</div>"
 }
 
-catch (e) {
-	console.log(e) = "Error"
-}
-
-
-//fonction permettant de récupérer l'id
-//faire un return pour le rendre disponible
 
 
